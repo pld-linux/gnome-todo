@@ -1,12 +1,13 @@
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.18.1
+Version:	3.20.2
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.18/%{name}-%{version}.tar.xz
-# Source0-md5:	b37b38c7f1ec50bebb3ce84119b3b2f6
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.20/%{name}-%{version}.tar.xz
+# Source0-md5:	efde44531f1e865fa84584df294d1352
+Patch0:		link.patch
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	appstream-glib-devel
 BuildRequires:	autoconf >= 2.69
@@ -44,6 +45,7 @@ Wykorzystuje mechanizmy GNOME, więc całkowicie integruje się ze
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__intltoolize}
@@ -80,9 +82,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README
 %attr(755,root,root) %{_bindir}/gnome-todo
+%{_libdir}/girepository-1.0/Gtd-1.0.typelib
 %{_datadir}/appdata/org.gnome.Todo.appdata.xml
 %{_datadir}/dbus-1/services/org.gnome.Todo.service
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.gschema.xml
+%{_datadir}/glib-2.0/schemas/org.gnome.todo.enums.xml
 %{_desktopdir}/org.gnome.Todo.desktop
-%{_iconsdir}/hicolor/*x*/apps/gnome-todo.png
-%{_iconsdir}/hicolor/symbolic/apps/gnome-todo-symbolic.svg
+%{_iconsdir}/hicolor/*x*/apps/org.gnome.Todo.png
+%{_iconsdir}/hicolor/symbolic/apps/org.gnome.Todo-symbolic.svg

@@ -1,0 +1,13 @@
+--- gnome-todo-3.20.2/src/Makefile.am~	2016-04-26 02:30:59.000000000 +0200
++++ gnome-todo-3.20.2/src/Makefile.am	2016-10-15 21:31:24.614300485 +0200
+@@ -98,8 +98,8 @@
+ 	$(GNOME_TODO_WARN_LDFLAGS)
+ 
+ gnome_todo_LDADD = \
+-	$(GNOME_TODO_LIBS) \
+-	$(top_builddir)/plugins/eds/libeds.a
++	$(top_builddir)/plugins/eds/libeds.a \
++	$(GNOME_TODO_LIBS)
+ 
+ gnome_todo_DEPENDENCIES = \
+ 	$(top_builddir)/plugins/eds/libeds.a
