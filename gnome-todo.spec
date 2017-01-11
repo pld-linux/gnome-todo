@@ -1,12 +1,12 @@
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.20.2
+Version:	3.22.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.20/%{name}-%{version}.tar.xz
-# Source0-md5:	efde44531f1e865fa84584df294d1352
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.22/%{name}-%{version}.tar.xz
+# Source0-md5:	05efe297566bd7bcd76da9ceb29d52af
 Patch0:		link.patch
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	appstream-glib-devel
@@ -16,9 +16,11 @@ BuildRequires:	evolution-data-server-devel >= 3.18.0
 BuildRequires:	gettext-tools
 BuildRequires:	glib2-devel >= 1:2.44.0
 BuildRequires:	gnome-online-accounts-devel >= 3.2.0
-BuildRequires:	gtk+3-devel >= 3.16.0
+BuildRequires:	gobject-introspection-devel >= 1.42.0
+BuildRequires:	gtk+3-devel >= 3.22.0
 BuildRequires:	intltool >= 0.40.6
 BuildRequires:	libical-devel >= 0.43
+BuildRequires:	libpeas-devel >= 1.17
 BuildRequires:	libtool >= 2:2.2.6
 BuildRequires:	pkgconfig
 BuildRequires:	tar >= 1:1.22
@@ -28,9 +30,12 @@ Requires(post,postun):	glib2 >= 1:2.44.0
 Requires:	evolution-data-server >= 3.18.0
 Requires:	glib2 >= 1:2.44.0
 Requires:	gnome-online-accounts >= 3.2.0
-Requires:	gtk+3 >= 3.16.0
+Requires:	gtk+3 >= 3.22.0
 Requires:	hicolor-icon-theme
 Requires:	libical >= 0.43
+Requires:	libpeas >= 1.17
+Suggests:	libpeas-loader-python3
+Suggests:	python3-pygobject3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -42,6 +47,37 @@ GNOME desktop environment.
 GNOME To Do to mała aplikacja do zarządzania osobistymi zadaniami.
 Wykorzystuje mechanizmy GNOME, więc całkowicie integruje się ze
 środowiskiem graficznym GNOME.
+
+%package devel
+Summary:	Header files for GNOME To Do
+Summary(pl.UTF-8):	Pliki nagłówkowe GNOME To Do
+Group:		X11/Development/Libraries
+Requires:	evolution-data-server-devel >= 3.18.0
+Requires:	glib2-devel >= 1:2.44.0
+Requires:	gtk+3-devel >= 3.22.0
+Requires:	libpeas-devel >= 1.17
+
+%description devel
+This package provides header files required for GNOME To Do plugins
+development.
+
+%description devel -l pl.UTF-8
+Pakiet dostarcza pliki nagłówkowe potrzebne do tworzenia wtyczek do
+GNOME To Do.
+
+%package apidocs
+Summary:	GNOME To Do API documentation
+Summary(pl.UTF-8):	Dokumentacja API GNOME To Do
+Group:		Documentation
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
+
+%description apidocs
+API documentation for GNOME To Do.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API GNOME To Do.
 
 %prep
 %setup -q
@@ -55,7 +91,8 @@ Wykorzystuje mechanizmy GNOME, więc całkowicie integruje się ze
 %{__autoheader}
 %{__automake}
 %configure \
-	--disable-silent-rules
+	--disable-silent-rules \
+	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
 
@@ -82,6 +119,16 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS NEWS README
 %attr(755,root,root) %{_bindir}/gnome-todo
+%dir %{_libdir}/gnome-todo
+%dir %{_libdir}/gnome-todo/plugins
+%dir %{_libdir}/gnome-todo/plugins/score
+%{_libdir}/gnome-todo/plugins/score/score.plugin
+%dir %{_libdir}/gnome-todo/plugins/score/score
+%{_libdir}/gnome-todo/plugins/score/score/*.py
+%dir %{_libdir}/gnome-todo/plugins/unscheduled-panel
+%{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel.plugin
+%dir %{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel
+%{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel/*.py
 %{_libdir}/girepository-1.0/Gtd-1.0.typelib
 %{_datadir}/appdata/org.gnome.Todo.appdata.xml
 %{_datadir}/dbus-1/services/org.gnome.Todo.service
@@ -90,3 +137,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/org.gnome.Todo.desktop
 %{_iconsdir}/hicolor/*x*/apps/org.gnome.Todo.png
 %{_iconsdir}/hicolor/symbolic/apps/org.gnome.Todo-symbolic.svg
+
+%files devel
+%defattr(644,root,root,755)
+%{_includedir}/gnome-todo
+%{_pkgconfigdir}/gnome-todo.pc
+%{_datadir}/gir-1.0/Gtd-1.0.gir
+
+%files apidocs
+%defattr(644,root,root,755)
+%{_gtkdocdir}/gnome-todo
+
