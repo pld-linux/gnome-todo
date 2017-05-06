@@ -1,13 +1,12 @@
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.22.1
+Version:	3.24.0.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.22/%{name}-%{version}.tar.xz
-# Source0-md5:	05efe297566bd7bcd76da9ceb29d52af
-Patch0:		link.patch
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.24/%{name}-%{version}.tar.xz
+# Source0-md5:	0f9312e4c67e5f23549bd2ebb5512fc2
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	appstream-glib-devel
 BuildRequires:	autoconf >= 2.69
@@ -18,7 +17,6 @@ BuildRequires:	glib2-devel >= 1:2.44.0
 BuildRequires:	gnome-online-accounts-devel >= 3.2.0
 BuildRequires:	gobject-introspection-devel >= 1.42.0
 BuildRequires:	gtk+3-devel >= 3.22.0
-BuildRequires:	intltool >= 0.40.6
 BuildRequires:	libical-devel >= 0.43
 BuildRequires:	libpeas-devel >= 1.17
 BuildRequires:	libtool >= 2:2.2.6
@@ -81,10 +79,8 @@ Dokumentacja API GNOME To Do.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-%{__intltoolize}
 %{__libtoolize}
 %{__aclocal}
 %{__autoconf}
@@ -132,8 +128,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/girepository-1.0/Gtd-1.0.typelib
 %{_datadir}/appdata/org.gnome.Todo.appdata.xml
 %{_datadir}/dbus-1/services/org.gnome.Todo.service
+%{_datadir}/glib-2.0/schemas/org.gnome.todo.background.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.enums.xml
+%{_datadir}/gnome-todo
 %{_desktopdir}/org.gnome.Todo.desktop
 %{_iconsdir}/hicolor/*x*/apps/org.gnome.Todo.png
 %{_iconsdir}/hicolor/symbolic/apps/org.gnome.Todo-symbolic.svg
