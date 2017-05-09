@@ -12,11 +12,12 @@ BuildRequires:	appstream-glib-devel
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake >= 1:1.11.1
 BuildRequires:	evolution-data-server-devel >= 3.18.0
-BuildRequires:	gettext-tools
+BuildRequires:	gettext-tools >= 0.19.8
 BuildRequires:	glib2-devel >= 1:2.44.0
 BuildRequires:	gnome-online-accounts-devel >= 3.2.0
 BuildRequires:	gobject-introspection-devel >= 1.42.0
 BuildRequires:	gtk+3-devel >= 3.22.0
+BuildRequires:	gtk-doc >= 1.14
 BuildRequires:	libical-devel >= 0.43
 BuildRequires:	libpeas-devel >= 1.17
 BuildRequires:	libtool >= 2:2.2.6
@@ -145,4 +146,3 @@ rm -rf $RPM_BUILD_ROOT
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/gnome-todo
-
