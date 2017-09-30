@@ -1,0 +1,23 @@
+--- gnome-todo-3.26.1/doc/reference/meson.build.docfix	2017-10-01 00:46:25.032986025 +0200
++++ gnome-todo-3.26.1/doc/reference/meson.build	2017-10-01 01:21:20.642918268 +0200
+@@ -48,17 +48,17 @@ glib_doc_path = join_paths(glib_prefix,
+ gtk_prefix = gtk_dep.get_pkgconfig_variable('prefix')
+ gtk_doc_path = join_paths(gtk_prefix, 'share', 'gtk-doc', 'html')
+ 
+-doc_path = join_paths(gnome_todo_datadir, 'gtk-doc', 'html', meson.project_name())
++doc_path = join_paths(gnome_todo_datadir, 'doc', 'gtk-doc', 'html', meson.project_name())
+ 
+ gnome.gtkdoc(
+   meson.project_name(),
+           main_sgml: meson.project_name() + '-docs.sgml',
+-            src_dir: src_inc,
++            src_dir: join_paths(meson.source_root(), 'src'),
+        dependencies: libgtd_dep,
+           mkdb_args: [ '--sgml-mode', '--output-format=xml' ],
+         html_assets: html_images,
+             install: true,
+-        install_dir: doc_path
++        install_dir: doc_path,
+   gobject_typesfile: meson.project_name() + '.types',
+           scan_args: [
+     '--rebuild-types',

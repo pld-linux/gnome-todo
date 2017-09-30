@@ -1,16 +1,15 @@
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.24.2
+Version:	3.26.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.24/%{name}-%{version}.tar.xz
-# Source0-md5:	1a7d49dd208d1342fa051b253022390e
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.26/%{name}-%{version}.tar.xz
+# Source0-md5:	980ee007fe3826803f52b16ba1038542
+Patch0:		%{name}-doc-build.patch
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	appstream-glib-devel
-BuildRequires:	autoconf >= 2.69
-BuildRequires:	automake >= 1:1.11.1
 BuildRequires:	evolution-data-server-devel >= 3.18.0
 BuildRequires:	gettext-tools >= 0.19.8
 BuildRequires:	glib2-devel >= 1:2.44.0
@@ -20,7 +19,7 @@ BuildRequires:	gtk+3-devel >= 3.22.0
 BuildRequires:	gtk-doc >= 1.14
 BuildRequires:	libical-devel >= 0.43
 BuildRequires:	libpeas-devel >= 1.17
-BuildRequires:	libtool >= 2:2.2.6
+BuildRequires:	meson >= 0.41.0
 BuildRequires:	pkgconfig
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
@@ -80,24 +79,20 @@ Dokumentacja API GNOME To Do.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
-%{__libtoolize}
-%{__aclocal}
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure \
-	--disable-silent-rules \
-	--with-html-dir=%{_gtkdocdir}
+%meson build \
+	-Denable-gtk-doc=true
 
-%{__make}
+%ninja -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT
+export LC_ALL=C.UTF-8
+DESTDIR=$RPM_BUILD_ROOT \
+%ninja -C build install
 
 %find_lang %{name}
 
@@ -127,7 +122,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel
 %{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel/*.py
 %{_libdir}/girepository-1.0/Gtd-1.0.typelib
-%{_datadir}/appdata/org.gnome.Todo.appdata.xml
+%{_datadir}/metainfo/org.gnome.Todo.metainfo.xml
 %{_datadir}/dbus-1/services/org.gnome.Todo.service
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.background.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.txt.gschema.xml
