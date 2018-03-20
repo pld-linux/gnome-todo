@@ -1,12 +1,12 @@
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.26.1
+Version:	3.28.0
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.26/%{name}-%{version}.tar.xz
-# Source0-md5:	980ee007fe3826803f52b16ba1038542
+Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.28/%{name}-%{version}.tar.xz
+# Source0-md5:	9c62a4e87766ffbeabea874b0817b0ad
 Patch0:		%{name}-doc-build.patch
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	appstream-glib-devel
@@ -83,16 +83,14 @@ Dokumentacja API GNOME To Do.
 
 %build
 %meson build \
-	-Denable-gtk-doc=true
+	-Dgtk_doc=true
 
-%ninja -C build
+%meson_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-export LC_ALL=C.UTF-8
-DESTDIR=$RPM_BUILD_ROOT \
-%ninja -C build install
+%meson_install -C build
 
 %find_lang %{name}
 
@@ -109,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README
+%doc AUTHORS CONTRIBUTING.md HACKING.md NEWS README.md
 %attr(755,root,root) %{_bindir}/gnome-todo
 %dir %{_libdir}/gnome-todo
 %dir %{_libdir}/gnome-todo/plugins
@@ -122,7 +120,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel
 %{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel/*.py
 %{_libdir}/girepository-1.0/Gtd-1.0.typelib
-%{_datadir}/metainfo/org.gnome.Todo.metainfo.xml
+%{_datadir}/metainfo/org.gnome.Todo.appdata.xml
 %{_datadir}/dbus-1/services/org.gnome.Todo.service
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.background.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.txt.gschema.xml
