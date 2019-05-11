@@ -1,13 +1,14 @@
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.28.0
+Version:	3.28.1
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.28/%{name}-%{version}.tar.xz
-# Source0-md5:	9c62a4e87766ffbeabea874b0817b0ad
+# Source0-md5:	795ba5027fbc0d790a40742468392cc6
 Patch0:		%{name}-doc-build.patch
+Patch1:		eds.patch
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	appstream-glib-devel
 BuildRequires:	evolution-data-server-devel >= 3.18.0
@@ -80,6 +81,7 @@ Dokumentacja API GNOME To Do.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %meson build \
