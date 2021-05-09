@@ -1,38 +1,47 @@
+#
+# Conditional build:
+%bcond_without	apidocs	# gtk-doc based API documentation
+
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	3.28.1
-Release:	4
+Version:	40.0
+Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	http://ftp.gnome.org/pub/GNOME/sources/gnome-todo/3.28/%{name}-%{version}.tar.xz
-# Source0-md5:	795ba5027fbc0d790a40742468392cc6
+Source0:	https://download.gnome.org/sources/gnome-todo/40/%{name}-%{version}.tar.xz
+# Source0-md5:	ed6418a35fdadcc8989f52b983481825
 Patch0:		%{name}-doc-build.patch
-# https://gitlab.gnome.org/GNOME/gnome-todo/uploads/dd33428f7a9132787265716dc39de382/gnome-todo-3.28.patch
-Patch1:		%{name}-ecal2.patch
 URL:		https://wiki.gnome.org/Apps/Todo
-BuildRequires:	evolution-data-server-devel >= 3.33.1
+BuildRequires:	evolution-data-server-devel >= 3.33.2
 BuildRequires:	gettext-tools >= 0.19.8
-BuildRequires:	glib2-devel >= 1:2.44.0
+BuildRequires:	glib2-devel >= 1:2.58.0
 BuildRequires:	gnome-online-accounts-devel >= 3.2.0
 BuildRequires:	gobject-introspection-devel >= 1.42.0
-BuildRequires:	gtk+3-devel >= 3.22.0
-BuildRequires:	gtk-doc >= 1.14
+BuildRequires:	gtk4-devel >= 4.0
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.14}
+BuildRequires:	libadwaita-devel
 BuildRequires:	libpeas-devel >= 1.17
+BuildRequires:	libportal-devel >= 0.4
 BuildRequires:	meson >= 0.41.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
+BuildRequires:	rpm-build >= 4.6
 BuildRequires:	rpmbuild(macros) >= 1.736
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
+# for todoist plugin (disabled in src/plugins/meson.build as of 40.0)
+#BuildRequires:	json-glib-devel
+#BuildRequires:	rest-devel >= 0.7
 Requires(post,postun):	gtk-update-icon-cache
-Requires(post,postun):	glib2 >= 1:2.44.0
-Requires:	evolution-data-server >= 3.33.1
-Requires:	glib2 >= 1:2.44.0
+Requires(post,postun):	glib2 >= 1:2.58.0
+Requires:	evolution-data-server >= 3.33.2
+Requires:	glib2 >= 1:2.58.0
 Requires:	gnome-online-accounts >= 3.2.0
-Requires:	gtk+3 >= 3.22.0
+Requires:	gtk4 >= 4.0
 Requires:	hicolor-icon-theme
 Requires:	libpeas >= 1.17
+Requires:	libportal >= 0.4
 Suggests:	libpeas-loader-python3 >= 1.17
 Suggests:	python3-pygobject3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -51,9 +60,9 @@ Wykorzystuje mechanizmy GNOME, więc całkowicie integruje się ze
 Summary:	Header files for GNOME To Do
 Summary(pl.UTF-8):	Pliki nagłówkowe GNOME To Do
 Group:		X11/Development/Libraries
-Requires:	evolution-data-server-devel >= 3.33.1
-Requires:	glib2-devel >= 1:2.44.0
-Requires:	gtk+3-devel >= 3.22.0
+Requires:	evolution-data-server-devel >= 3.33.2
+Requires:	glib2-devel >= 1:2.58.0
+Requires:	gtk4-devel >= 4.0
 Requires:	libpeas-devel >= 1.17
 
 %description devel
@@ -79,11 +88,10 @@ Dokumentacja API GNOME To Do.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %meson build \
-	-Dgtk_doc=true
+	%{?with_apidocs:-Ddocumentation=true}
 
 %ninja_build -C build
 
@@ -107,28 +115,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS NEWS README.md
+%doc NEWS README.md
 %attr(755,root,root) %{_bindir}/gnome-todo
-%dir %{_libdir}/gnome-todo
-%dir %{_libdir}/gnome-todo/plugins
-%dir %{_libdir}/gnome-todo/plugins/score
-%{_libdir}/gnome-todo/plugins/score/score.plugin
-%dir %{_libdir}/gnome-todo/plugins/score/score
-%{_libdir}/gnome-todo/plugins/score/score/*.py
-%dir %{_libdir}/gnome-todo/plugins/unscheduled-panel
-%{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel.plugin
-%dir %{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel
-%{_libdir}/gnome-todo/plugins/unscheduled-panel/unscheduled-panel/*.py
 %{_libdir}/girepository-1.0/Gtd-1.0.typelib
 %{_datadir}/dbus-1/services/org.gnome.Todo.service
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.background.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.todo.txt.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.todo.gschema.xml
-%{_datadir}/glib-2.0/schemas/org.gnome.todo.enums.xml
-%{_datadir}/gnome-todo
 %{_datadir}/metainfo/org.gnome.Todo.appdata.xml
 %{_desktopdir}/org.gnome.Todo.desktop
-%{_iconsdir}/hicolor/*x*/apps/org.gnome.Todo.png
+%{_iconsdir}/hicolor/scalable/apps/org.gnome.Todo.svg
+%{_iconsdir}/hicolor/scalable/apps/org.gnome.Todo.Devel.svg
+%{_iconsdir}/hicolor/symbolic/actions/builder-view-left-pane-symbolic.svg
+%{_iconsdir}/hicolor/symbolic/actions/drag-handle-symbolic.svg
+%{_iconsdir}/hicolor/symbolic/actions/mail-inbox-symbolic.svg
+%{_iconsdir}/hicolor/symbolic/actions/view-tasks-*-symbolic.svg
 %{_iconsdir}/hicolor/symbolic/apps/org.gnome.Todo-symbolic.svg
 
 %files devel
@@ -137,6 +137,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/gnome-todo.pc
 %{_datadir}/gir-1.0/Gtd-1.0.gir
 
+%if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/gnome-todo
+%endif
