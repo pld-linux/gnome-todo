@@ -1,17 +1,16 @@
 #
 # Conditional build:
-%bcond_without	apidocs	# gtk-doc based API documentation
+%bcond_with	apidocs	# gtk-doc based API documentation [missing in 41.0]
 
 Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
-Version:	40.1
+Version:	41.0
 Release:	1
 License:	GPL v3+
 Group:		X11/Applications
-Source0:	https://download.gnome.org/sources/gnome-todo/40/%{name}-%{version}.tar.xz
-# Source0-md5:	deae69c8866ff5adb96607955ab45e73
-Patch0:		%{name}-doc-build.patch
+Source0:	https://download.gnome.org/sources/gnome-todo/41/%{name}-%{version}.tar.xz
+# Source0-md5:	606b3f54e9f3676ee017a4f02e11948a
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	evolution-data-server-devel >= 3.33.2
 BuildRequires:	gettext-tools >= 0.19.8
@@ -23,7 +22,7 @@ BuildRequires:	gtk4-devel >= 4.0
 BuildRequires:	libadwaita-devel
 BuildRequires:	libpeas-devel >= 1.17
 BuildRequires:	libportal-devel >= 0.4
-BuildRequires:	meson >= 0.41.0
+BuildRequires:	meson >= 0.53.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	rpm-build >= 4.6
@@ -64,6 +63,7 @@ Requires:	evolution-data-server-devel >= 3.33.2
 Requires:	glib2-devel >= 1:2.58.0
 Requires:	gtk4-devel >= 4.0
 Requires:	libpeas-devel >= 1.17
+{!?with_gtk_doc:Obsoletes:	gnome-todo-apidocs < 41.0}
 
 %description devel
 This package provides header files required for GNOME To Do plugins
@@ -87,7 +87,6 @@ Dokumentacja API GNOME To Do.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %meson build \
@@ -100,7 +99,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %ninja_install -C build
 
-%find_lang %{name}
+%find_lang %{name} --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
