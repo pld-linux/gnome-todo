@@ -63,7 +63,7 @@ Requires:	evolution-data-server-devel >= 3.33.2
 Requires:	glib2-devel >= 1:2.58.0
 Requires:	gtk4-devel >= 4.0
 Requires:	libpeas-devel >= 1.17
-{!?with_gtk_doc:Obsoletes:	gnome-todo-apidocs < 41.0}
+%{!?with_gtk_doc:Obsoletes:	gnome-todo-apidocs < 41.0}
 
 %description devel
 This package provides header files required for GNOME To Do plugins
