@@ -6,11 +6,12 @@ Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
 Version:	41.0
-Release:	1
+Release:	2
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://download.gnome.org/sources/gnome-todo/41/%{name}-%{version}.tar.xz
 # Source0-md5:	606b3f54e9f3676ee017a4f02e11948a
+Patch0:		%{name}-libportal.patch
 URL:		https://wiki.gnome.org/Apps/Todo
 BuildRequires:	evolution-data-server-devel >= 3.33.2
 BuildRequires:	gettext-tools >= 0.19.8
@@ -21,7 +22,7 @@ BuildRequires:	gtk4-devel >= 4.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.14}
 BuildRequires:	libadwaita-devel
 BuildRequires:	libpeas-devel >= 1.17
-BuildRequires:	libportal-devel >= 0.4
+BuildRequires:	libportal-gtk4-devel >= 0.4
 BuildRequires:	meson >= 0.53.0
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
@@ -40,7 +41,7 @@ Requires:	gnome-online-accounts >= 3.2.0
 Requires:	gtk4 >= 4.0
 Requires:	hicolor-icon-theme
 Requires:	libpeas >= 1.17
-Requires:	libportal >= 0.4
+Requires:	libportal-gtk4 >= 0.4
 Suggests:	libpeas-loader-python3 >= 1.17
 Suggests:	python3-pygobject3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -87,6 +88,7 @@ Dokumentacja API GNOME To Do.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %meson build \

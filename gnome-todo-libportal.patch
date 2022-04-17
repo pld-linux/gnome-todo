@@ -1,0 +1,22 @@
+--- gnome-todo-41.0/src/plugins/background/meson.build.orig	2021-09-16 19:48:29.553873300 +0200
++++ gnome-todo-41.0/src/plugins/background/meson.build	2022-04-17 18:53:03.991628983 +0200
+@@ -1,7 +1,7 @@
+ plugins_ldflags += ['-Wl,--undefined=gtd_plugin_background_register_types']
+ 
+ plugins_deps += [
+-  dependency('libportal'),
++  dependency('libportal-gtk4'),
+ ]
+ 
+ plugins_sources += files(
+--- gnome-todo-41.0/src/plugins/background/gtd-plugin-background.c.orig	2021-09-16 19:48:29.553873300 +0200
++++ gnome-todo-41.0/src/plugins/background/gtd-plugin-background.c	2022-04-17 19:01:20.392273084 +0200
+@@ -28,7 +28,7 @@
+ #include <gtk/gtk.h>
+ 
+ #include <libportal/portal.h>
+-#include <libportal/portal-gtk4.h>
++#include <libportal-gtk4/portal-gtk4.h>
+ 
+ #define AUTOSTART_NOTIFICATION_ID      "Gtd::BackgroundPlugin::autostart_notification"
+ #define AUTOSTART_NOTIFICATION_TIMEOUT 3  /* seconds */
