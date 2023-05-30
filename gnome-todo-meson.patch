@@ -1,0 +1,53 @@
+--- gnome-todo-41.0/src/meson.build.orig	2021-09-16 19:48:29.552873400 +0200
++++ gnome-todo-41.0/src/meson.build	2023-05-30 18:28:16.358310543 +0200
+@@ -16,6 +16,25 @@ vcs_identifier_h = declare_dependency(so
+ 
+ gnome_todo_deps += vcs_identifier_h
+ 
++#########
++# Enums #
++#########
++
++enum_headers = files(
++  join_paths('animation', 'gtd-animation-enums.h'),
++)
++
++enum_types = 'gtd-enum-types'
++
++gtd_enum_types = gnome.mkenums(
++  enum_types,
++     sources: enum_headers,
++  c_template: enum_types + '.c.template',
++  h_template: enum_types + '.h.template'
++)
++
++sources += gtd_enum_types
++
+ ###########
+ # Plugins #
+ ###########
+@@ -43,24 +62,6 @@ gtd_deps = gnome_todo_deps + [
+ ]
+ 
+ 
+-#########
+-# Enums #
+-#########
+-
+-enum_headers = files(
+-  join_paths('animation', 'gtd-animation-enums.h'),
+-)
+-
+-enum_types = 'gtd-enum-types'
+-
+-sources += gnome.mkenums(
+-  enum_types,
+-     sources: enum_headers,
+-  c_template: enum_types + '.c.template',
+-  h_template: enum_types + '.h.template'
+-)
+-
+-
+ ################
+ # Header files #
+ ################
