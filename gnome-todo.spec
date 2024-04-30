@@ -6,7 +6,7 @@ Summary:	GNOME To Do - application to manage your personal tasks
 Summary(pl.UTF-8):	GNOME To Do - aplikacja do zarządzania osobistymi zadaniami
 Name:		gnome-todo
 Version:	41.0
-Release:	3
+Release:	4
 License:	GPL v3+
 Group:		X11/Applications
 Source0:	https://download.gnome.org/sources/gnome-todo/41/%{name}-%{version}.tar.xz
